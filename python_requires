@@ -23,6 +23,9 @@ from metaextract import utils as meta_utils
 from packaging.requirements import Requirement
 
 
+SPECFILE_ENCODING='utf-8'
+
+
 def _get_complete_requires(all_requires):
     """get a dict with all requirements from metaextract"""
     complete_requires = dict()
@@ -106,11 +109,11 @@ def update_spec_files(all_requires):
     for specfile in glob.glob('./*.spec'):
         try:
             f = open(specfile, 'r+')
-            contents = f.read()
+            contents = f.read().decode(SPECFILE_ENCODING)
             f.seek(0)
             f.truncate()
             contents = parse_update_spec_file(specfile, contents, all_requires)
-            f.write(contents)
+            f.write(contents.encode(SPECFILE_ENCODING))
         finally:
             f.close()
 
